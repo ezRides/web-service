@@ -1,180 +1,175 @@
 body{
-	background-color: #EEEFF2;
+    background-color: #EEEFF2;
 }
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 a:hover, a:focus, a:active {
-  text-decoration: none;
+    text-decoration: none;
 }
 .padding-t70{
-	padding-top: 70px;
+    padding-top: 70px;
 }
 .text-center{
-	text-align: center;
+    text-align: center;
 }
 /*BORDER COLORS*/
 .border-green{
-	border-color:#00cec9 !important;
+    border-color:#00cec9 !important;
 }
 .border-purple{
-	border-color:#a29bfe!important;
+    border-color:#a29bfe!important;
 }
 .border-yellow{
-	border-color:#fdcb6e!important;
+    border-color:#fdcb6e!important;
 }
 .border-pink{
-	border-color:#e84393 !important;
+    border-color:#e84393 !important;
 }
 /*END BORDER COLORS*/
 .navbar{
-	background-color:white;
-	color:#65B3F5;
+    background-color:white;
+    color:#65B3F5;
 }
 .navbar-brand{
-	font-family: 'Pacifico', cursive;
+    font-family: 'Pacifico', cursive;
 }
 .navbar-brand img{
-	max-height: 100%;
-	display: inline-block;
+    max-height: 100%;
+    display: inline-block;
 }
 .navbar a{
-	color: inherit!important;
+    color: inherit!important;
 }
 .navbar-nav a:hover{
-	color:inherit !important;
-	background-color: inherit !important;
+    color:inherit !important;
+    background-color: inherit !important;
 }
 .destinations-container{
-	font-size: 21px;
+    font-size: 21px;
 }
 .card-menu{
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-	padding:10px;
-	box-sizing: border-box;
-	background-color: white;
-	margin-right: 5px;
-	margin-top: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding:10px;
+    box-sizing: border-box;
+    background-color: white;
+    margin-right: 5px;
+    margin-top: 5px;
 }
 .card{
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-	padding:10px;
-	box-sizing: border-box;
-	background-color: white;
-	margin-right: 5px;
-	margin-top: 5px;
-	border-left: 10px solid;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding:10px;
+    box-sizing: border-box;
+    background-color: white;
+    margin-right: 5px;
+    margin-top: 5px;
+    border-left: 10px solid;
 }
 .screen-size{
-	font-size: 20vh !important;
+    font-size: 20vh !important;
 }
 .screen-size .card{
-	border-left-width: 10vw!important;
+    border-left-width: 10vw!important;
 }
-
 /*
 FANCY BUTTONS
 */
-
 .bg-gradient1 span,
 .bg-gradient1:before {
-  background: #52A0FD;
-  background: -moz-linear-gradient(left, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
-  background: -webkit-linear-gradient(left, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
-  background: linear-gradient(to right, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
+    background: #52A0FD;
+    background: -moz-linear-gradient(left, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
+    background: -webkit-linear-gradient(left, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
+    background: linear-gradient(to right, #52A0FD 0%, #00e2fa 80%, #00e2fa 100%);
 }
-
 .bg-gradient2 span,
 .bg-gradient2:before {
-  background: #44ea76;
-  background: -moz-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
-  background: -webkit-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
-  background: linear-gradient(to right, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+    background: #44ea76;
+    background: -moz-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+    background: -webkit-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+    background: linear-gradient(to right, #44ea76 0%, #39fad7 80%, #39fad7 100%);
 }
-
 .bg-gradient3 span,
 .bg-gradient3:before {
-  background: #fa6c9f;
-  background: -moz-linear-gradient(left, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
-  background: -webkit-linear-gradient(left, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
-  background: linear-gradient(to right, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
+    background: #fa6c9f;
+    background: -moz-linear-gradient(left, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
+    background: -webkit-linear-gradient(left, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
+    background: linear-gradient(to right, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
 }
-
 .fancy-button {
-  display: inline-block;
-  margin: 30px;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  font-size: 17px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #ffffff;
-  position: relative;
+    display: inline-block;
+    margin: 30px;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+    position: relative;
 }
 .fancy-button:before {
-  content: '';
-  display: inline-block;
-  height: 40px;
-  position: absolute;
-  bottom: -5px;
-  left: 30px;
-  right: 30px;
-  z-index: -1;
-  border-radius: 30em;
-  filter: blur(20px) brightness(0.95);
-  transform-style: preserve-3d;
-  transition: all 0.3s ease-out;
+    content: '';
+    display: inline-block;
+    height: 40px;
+    position: absolute;
+    bottom: -5px;
+    left: 30px;
+    right: 30px;
+    z-index: -1;
+    border-radius: 30em;
+    filter: blur(20px) brightness(0.95);
+    transform-style: preserve-3d;
+    transition: all 0.3s ease-out;
 }
 .fancy-button svg {
-	display: block;
-	margin:0 auto;
-  margin-top: -1px;
-  margin-bottom: 5px;
-  font-size: 2em;
-  vertical-align: middle;
+    display: block;
+    margin:0 auto;
+    margin-top: -1px;
+    margin-bottom: 5px;
+    font-size: 2em;
+    vertical-align: middle;
 }
 .fancy-button span {
-  display: inline-block;
-  padding: 18px 60px;
-  border-radius: 50em;
-  position: relative;
-  z-index: 2;
-  will-change: transform, filter;
-  transform-style: preserve-3d;
-  transition: all 0.3s ease-out;
+    display: inline-block;
+    padding: 18px 60px;
+    border-radius: 50em;
+    position: relative;
+    z-index: 2;
+    will-change: transform, filter;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease-out;
 }
 .fancy-button:focus, .fancy-button:active {
-  color: #ffffff;
+    color: #ffffff;
 }
 .fancy-button:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
 .fancy-button:hover span {
-  filter: brightness(1.05) contrast(1.05);
-  transform: scale(0.95);
+    filter: brightness(1.05) contrast(1.05);
+    transform: scale(0.95);
 }
 .fancy-button:hover:before {
-  bottom: 0;
-  filter: blur(10px) brightness(0.95);
+    bottom: 0;
+    filter: blur(10px) brightness(0.95);
 }
 .fancy-button.pop-onhover:before {
-  opacity: 0;
-  bottom: 10px;
+    opacity: 0;
+    bottom: 10px;
 }
 .fancy-button.pop-onhover:hover:before {
-  bottom: -7px;
-  opacity: 1;
-  filter: blur(20px);
+    bottom: -7px;
+    opacity: 1;
+    filter: blur(20px);
 }
 .fancy-button.pop-onhover:hover span {
-  transform: scale(1.04);
+    transform: scale(1.04);
 }
 .fancy-button.pop-onhover:hover:active span {
-  filter: brightness(1) contrast(1);
-  transform: scale(1);
-  transition: all 0.15s ease-out;
+    filter: brightness(1) contrast(1);
+    transform: scale(1);
+    transition: all 0.15s ease-out;
 }
 .fancy-button.pop-onhover:hover:active:before {
-  bottom: 0;
-  filter: blur(10px) brightness(0.95);
-  transition: all 0.2s ease-out;
+    bottom: 0;
+    filter: blur(10px) brightness(0.95);
+    transition: all 0.2s ease-out;
 }
