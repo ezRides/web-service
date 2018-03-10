@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  ezrides-front:
+    build: .
+    volumes:
+      - ../:/usr/local/apache2/htdocs/
+    command: /bin/bash -c "sleep 1s && apachectl && /bin/bash"
+    ports:
+      - 80:80
