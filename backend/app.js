@@ -26,18 +26,18 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/request', function(req, res) {
-
+  res.send ({ title: 'Request'});
 });
-app.get('/request/{id}',function(req,res){
-
+app.get('/request/:id',function(req,res){
+  res.send ({ title: 'Request by ID'});
 });
 
-app.get('/buttoninfo/{id}',function(req,res){
-
+app.get('/buttoninfo/:id',function(req,res){
+  res.send ({ title: 'Button Info'});
 });
 
 app.get('/active',function(req,res){
-
+  res.send ({ title: 'Active Destinations'});
 });
 
 module.exports = app;
