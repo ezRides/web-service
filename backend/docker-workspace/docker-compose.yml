@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  ezrides-backend:
+    build: .
+    volumes:
+      - ../:/home/user
+    command: /bin/bash -c "cd /home/user && node ./node_modules/nodemon/bin/nodemon.js ./bin/www.js"
+    ports:
+      - 3000:3000
+  database:
+    build: ./database
+    ports:
+      - 5984:5984

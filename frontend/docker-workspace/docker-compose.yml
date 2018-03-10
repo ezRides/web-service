@@ -5,6 +5,6 @@ services:
     build: .
     volumes:
       - ../:/usr/local/apache2/htdocs/
-    command: /bin/bash -c "sleep 1s && apachectl && /bin/bash"
+    #command: /bin/bash -c "sleep 1s && apachectl"
     ports:
       - 80:80

@@ -1,0 +1,10 @@
+# Packages on this list will be installed using apt
+
+# Commom utils
+vim
+git
+nano
+htop
+curl
+wget
+build-essential
