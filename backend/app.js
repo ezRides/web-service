@@ -8,40 +8,31 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
-var nano = require('nano')('http://172.19.0.4:5984');
+var nano = require('nano')('http://172.18.0.3:5984');
 
 // Express
 var app = express();
 var ez = nano.use('ez-rides');
 
+
+var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
+var i = 1;
 function intervalFunct(){
   nano.db.get('ez-rides',function(err,req){
     if(err){
         console.log(err.message);
         nano.db.create('ez-rides', function(req,res){
           if(res){
+            for(var a =1; a<= routarr.length;a++){
+              ez.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
+                if(!err){
+
+                } else {
+                  console.log(err);
+                }
+              });
+            }
             //Created
-            //console.log("Se creo la base de datos");
-            ez.insert({_id:'1', route: 'Lopez Mateos'},function(err,body){
-              if(err){
-                console.log(body);
-              }
-            });
-            ez.insert({_id:'2', route: 'Av La Calma'},function(err,body){
-              if(err){
-                console.log(body);
-              }
-            });
-            ez.insert({_id:'3', route: 'Av.Guadalupe'},function(err,body){
-              if(err){
-                console.log(body);
-              }
-            });
-            ez.insert({_id:'4', route: 'Av.Naciones Unidas'},function(err,body){
-              if(err){
-                console.log(body);
-              }
-            });
             clearInterval();
           } else {
             console.log("no se creo la base de datos");
@@ -49,8 +40,16 @@ function intervalFunct(){
           }
         });
                   
-        } else{
-
+        } else {
+          for(var a =1; a<=routarr.length;a++){
+            ez.insert({_id: String(a),route:routarr[a]}, function(err,body){
+              if(!err){
+              } else {
+               
+              }
+            });
+          }
+          clearInterval();
         }
     })
 }
@@ -71,14 +70,22 @@ app.get('/', function(req, res, next) {
 
 app.get('/request', function(req, res) {
   res.send ({ title: 'Request'});
+  /*ez.list({startkey:'1'}, function(err, body) {
+    if (!err) {
+      body.rows.forEach(function(doc) {
+        res.send(doc);
+      });
+    }
+  });*/
 });
 app.get('/request/:id',function(req,res){
   //res.send ({ title: 'Request by ID'});
   var id = req.params.id;
   ez.get(id, function(err,body){
       if(err){
-        console.log(body);
-      }else{
+        res.send({title:'Error' ,
+         error: err.message});
+      } else {
           res.send(body); 
         }
       
