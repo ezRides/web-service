@@ -8,11 +8,11 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
-var nano = require('nano')('http://172.18.0.3:5984');
+var nano = require('nano')('http://172.19.0.4:5984');
 
 // Express
 var app = express();
-
+var ez = nano.use('ez-rides');
 
 function intervalFunct(){
   nano.db.get('ez-rides',function(err,req){
@@ -21,7 +21,27 @@ function intervalFunct(){
         nano.db.create('ez-rides', function(req,res){
           if(res){
             //Created
-            console.log("Se creo la base de datos");
+            //console.log("Se creo la base de datos");
+            ez.insert({_id:'1', route: 'Lopez Mateos'},function(err,body){
+              if(err){
+                console.log(body);
+              }
+            });
+            ez.insert({_id:'2', route: 'Av La Calma'},function(err,body){
+              if(err){
+                console.log(body);
+              }
+            });
+            ez.insert({_id:'3', route: 'Av.Guadalupe'},function(err,body){
+              if(err){
+                console.log(body);
+              }
+            });
+            ez.insert({_id:'4', route: 'Av.Naciones Unidas'},function(err,body){
+              if(err){
+                console.log(body);
+              }
+            });
             clearInterval();
           } else {
             console.log("no se creo la base de datos");
@@ -29,6 +49,8 @@ function intervalFunct(){
           }
         });
                   
+        } else{
+
         }
     })
 }
@@ -51,7 +73,16 @@ app.get('/request', function(req, res) {
   res.send ({ title: 'Request'});
 });
 app.get('/request/:id',function(req,res){
-  res.send ({ title: 'Request by ID'});
+  //res.send ({ title: 'Request by ID'});
+  var id = req.params.id;
+  ez.get(id, function(err,body){
+      if(err){
+        console.log(body);
+      }else{
+          res.send(body); 
+        }
+      
+  });
 });
 
 app.get('/buttoninfo/:id',function(req,res){
