@@ -26,7 +26,6 @@ function intervalFunct(){
             for(var a =1; a<= routarr.length;a++){
               ez.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
                 if(!err){
-
                 } else {
                   console.log(err);
                 }
@@ -39,13 +38,11 @@ function intervalFunct(){
             //Failed
           }
         });
-                  
         } else {
           for(var a =1; a<=routarr.length;a++){
             ez.insert({_id: String(a),route:routarr[a-1]}, function(err,body){
               if(!err){
               } else {
-               
               }
             });
           }
