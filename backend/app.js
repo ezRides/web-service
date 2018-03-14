@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
-var nano = require('nano')('http://172.18.0.3:5984');
+var nano = require('nano')('http://172.19.0.3:5984');
 
 // Express
 var app = express();
@@ -42,7 +42,7 @@ function intervalFunct(){
                   
         } else {
           for(var a =1; a<=routarr.length;a++){
-            ez.insert({_id: String(a),route:routarr[a]}, function(err,body){
+            ez.insert({_id: String(a),route:routarr[a-1]}, function(err,body){
               if(!err){
               } else {
                
@@ -69,14 +69,16 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/request', function(req, res) {
-  res.send ({ title: 'Request'});
-  /*ez.list({startkey:'1'}, function(err, body) {
-    if (!err) {
+  //res.send ({ title: 'Request'});
+    ez.list({startkey:'1'}, function(err, body) {
+    if (err) {
       body.rows.forEach(function(doc) {
         res.send(doc);
       });
+    } else {
+      console.log(err);
     }
-  });*/
+  });
 });
 app.get('/request/:id',function(req,res){
   //res.send ({ title: 'Request by ID'});
