@@ -21,6 +21,8 @@ var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
+timer = 0;
+
 function intervalFunct(){
   nano.db.get('ez-rides',function(err,req){
     if(err){
@@ -59,8 +61,8 @@ function intervalFunct(){
 timer = setInterval(intervalFunct, 1000);
 
 app.use(function(req, res, next) {
-    res.setHeader("Cache-Control", "no-cache must-revalidate");
-    next();
+  res.setHeader("Cache-Control", "no-cache must-revalidate");
+  next();
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -89,17 +91,16 @@ app.get('/', function(req, res, next) {
     }
   });
 });
+
 app.get('/request/:id',function(req,res){
   //res.send ({ title: 'Request by ID'});
   var id = req.params.id;
   ez.get(id, function(err,body){
-      if(err){
-        res.send({title:'Error' ,
-         error: err.message});
-      } else {
-          res.send(body); 
-        }
-      
+    if(err){
+      res.send({title:'Error', error: err.message});
+    } else {
+      res.send(body);
+    }
   });
 });
 
@@ -108,7 +109,20 @@ app.get('/buttoninfo/:id',function(req,res){
 });
 
 app.get('/active',function(req,res){
-  res.send ({ title: 'Active Destinations'});
+  const MOCKED_REQUEST = {
+    "destinations": [
+      {
+        "name": "Lopez Mateos",
+        "id": "2hfhd76f4hds"
+      },
+      {
+        "name": "La Minerva",
+        "id": "ATF8j4978j34"
+      }
+    ]
+  };
+
+  res.send (MOCKED_REQUEST);
 });
 
 module.exports = app;
