@@ -8,7 +8,7 @@ services:
     command: /bin/bash -c "cd /home/user && node ./node_modules/nodemon/bin/nodemon.js ./bin/www.js"
     ports:
       - 3000:3000
-  database:
+  ezrides-database:
     build: ./database
     ports:
       - 5984:5984

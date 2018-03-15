@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  ezrides-backend:
+    extends:
+      file: backend/docker-workspace/docker-compose.yml
+      service: ezrides-backend
+
+  ezrides-database:
+    extends:
+      file: backend/docker-workspace/docker-compose.yml
+      service: ezrides-database
+
+  ezrides-front:
+    extends:
+      file: frontend/docker-workspace/docker-compose.yml
+      service: ezrides-front

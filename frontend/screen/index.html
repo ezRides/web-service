@@ -6,31 +6,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/destinations.css">
+    <script src="/assets/js/libphilip.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="row destinations-container screen-size">
+<div class="row destinations-container screen-size" id="content">
     <div class="col-md-12">
-        <div class="card border-green">
-            Av las torres
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="card border-purple">
-            Av Periferico Norte
-        </div>
-    </div>
-    <div class="col-md-12 ">
-        <div class="card border-yellow">
-            Lopez Mateos
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="card border-pink">
-            Minerva
+        <div class="card border">
+            Loading...
         </div>
     </div>
 </div>
+<script>
+    const colors = ['green', 'purple', 'yellow', 'pink'];
+    const CARD =
+        `<div class="col-md-12">
+            <div class="card border-{1}">
+                {0}
+            </div>
+        </div>`
+
+    var html = "";
+
+    fetch('http://ez-rides.com:3000/active', {
+        method: 'GET'
+    }).then(res => res.json()).then(e => {
+        var color = 0;
+        e.destinations.forEach(element => {
+            html += String.format (CARD, element.name, colors[color++]);
+        });
+
+        get ("content").innerHTML = html;
+    }).catch( err => {
+        html = "<h4>No results found</h4>" + err
+        get ("content").innerHTML = html;
+    })
+</script>
+
 </body>
 </html>
