@@ -8,10 +8,12 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
+var cors = require('cors')
 var nano = require('nano')('http://ezrides-database:5984');
 
 // Express
 var app = express();
+app.use(cors());
 var ez = nano.use('ez-rides');
 
 
@@ -71,26 +73,42 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/request', function(req, res) {
-  res.send ({ title: 'Request'});
-  /*ez.list({startkey:'1'}, function(err, body) {
-    if (!err) {
-      body.rows.forEach(function(doc) {
-        res.send(doc);
-      });
-    }
-  });*/
+  const MOCKED_REQUEST = {
+    "destinations": [
+      {
+        "name": "Lopez Mateos",
+        "id": "2hfhd76f4hds"
+      },
+      {
+        "name": "Av La Calma",
+        "id": "ATF8j4978j34"
+      },{
+        "name": "Av Guadalupe",
+        "id": "ATF8j4978j34"
+      },
+      {
+        "name": "Av Naciones Unidas",
+        "id": "ATF8j4978j34"
+      },
+      {
+        "name": "La Minerva",
+        "id": "ATF8j4978j34"
+      }
+    ]
+  };
+
+  res.send (MOCKED_REQUEST);
 });
+
 app.get('/request/:id',function(req,res){
   //res.send ({ title: 'Request by ID'});
   var id = req.params.id;
   ez.get(id, function(err,body){
-      if(err){
-        res.send({title:'Error' ,
-         error: err.message});
-      } else {
-          res.send(body);
-        }
-
+    if(err){
+      res.send({title:'Error', error: err.message});
+    } else {
+      res.send(body);
+    }
   });
 });
 
@@ -99,7 +117,20 @@ app.get('/buttoninfo/:id',function(req,res){
 });
 
 app.get('/active',function(req,res){
-  res.send ({ title: 'Active Destinations'});
+  const MOCKED_REQUEST = {
+    "destinations": [
+      {
+        "name": "Lopez Mateos",
+        "id": "2hfhd76f4hds"
+      },
+      {
+        "name": "La Minerva",
+        "id": "ATF8j4978j34"
+      }
+    ]
+  };
+
+  res.send (MOCKED_REQUEST);
 });
 
 module.exports = app;
