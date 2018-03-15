@@ -8,12 +8,16 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
-var nano = require('nano')('http://172.19.0.3:5984');
+var cors = require ('cors');
+var nano = require('nano')('http://ezrides-database:5984');
 
 // Express
 var app = express();
+app.use(cors());
 var ez = nano.use('ez-rides');
+var bdres = [];
 
+var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
@@ -27,14 +31,14 @@ function intervalFunct(){
               ez.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
                 if(!err){
                 } else {
-                  console.log(err);
+                  //console.log(err);
                 }
               });
             }
             //Created
-            clearInterval();
+            clearInterval(timer);
           } else {
-            console.log("no se creo la base de datos");
+            console.log("no se creo la base de datos", req);
             //Failed
           }
         });
@@ -42,16 +46,17 @@ function intervalFunct(){
           for(var a =1; a<=routarr.length;a++){
             ez.insert({_id: String(a),route:routarr[a-1]}, function(err,body){
               if(!err){
-              } else {
-              }
-            });
+                  } else {
           }
-          clearInterval();
-        }
-    })
+          clearInterval(timer);
+        });
+      }
+    }        
+  });
 }
+      
 
-setInterval(intervalFunct, 1000);
+timer = setInterval(intervalFunct, 1000);
 
 app.use(function(req, res, next) {
     res.setHeader("Cache-Control", "no-cache must-revalidate");
@@ -65,13 +70,20 @@ app.get('/', function(req, res, next) {
   res.send ({ title: 'Express' });
 });
 
-app.get('/request', function(req, res) {
+ app.get('/request', function(req, res) {
   //res.send ({ title: 'Request'});
     ez.list({startkey:'1'}, function(err, body) {
-    if (err) {
-      body.rows.forEach(function(doc) {
-        res.send(doc);
+    if (!err) {
+   body.rows.forEach(function(doc) {
+     var a=0;
+     console.log(doc);
+        bdres.push({ id : doc.id
+          , value : doc.value});
+        //console.log(bdres);
+    //res.send(doc);
       });
+      res.send(bdres);
+      bdres=[];
     } else {
       console.log(err);
     }

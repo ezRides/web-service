@@ -9,6 +9,6 @@ services:
     ports:
       - 3000:3000
   database:
-    build: ./database
+    build: ./ezrides-database
     ports:
       - 5984:5984
