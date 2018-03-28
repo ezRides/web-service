@@ -122,13 +122,24 @@ app.get('/request/:id',function(req,res){
 
   //res.send ({ title: 'Request by ID'});
   var id = req.params.id;
-  ez.get(id, function(err,body){
-    if(err){
-      res.send({title:'Error', error: err.message});
-    } else {
-      res.send(body);
+
+    for (let a = 0; a < requested_routes.destinations.length;a++){
+      if(id == requested_routes.destinations[a].id){
+        requested_routes.destinations[a].ttl=30
+        return res.send({});
+      }
     }
-  });
+    res.send(routes_cache)
+    for(let a=0; a < routes_cache.destinations.length; a++){
+      if(id == routes_cache.destinations[a].id) {
+        requested_routes.destinations.push ({
+          name: routes_cache.destinations[a].route,
+          id:  routes_cache.destinations[a].id,
+          ttl: 30
+        });
+      }
+    }
+    return res.send({});
 });
 
 app.get('/buttoninfo/:id',function(req,res){
