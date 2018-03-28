@@ -8,14 +8,14 @@ var bodyParser = require('body-parser');
 var stemmer = require('porter-stemmer').stemmer;
 var async = require('async');
 var http = require('http');
-var cors = require('cors')
+var cors = require ('cors');
 var nano = require('nano')('http://ezrides-database:5984');
 
 // Express
 var app = express();
 app.use(cors());
 var ez = nano.use('ez-rides');
-
+var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
@@ -30,9 +30,8 @@ function intervalFunct(){
             for(var a =1; a<= routarr.length;a++){
               ez.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
                 if(!err){
-
                 } else {
-                  // console.log(err);
+                  //console.log(err);
                 }
               });
             }
@@ -43,20 +42,19 @@ function intervalFunct(){
             //Failed
           }
         });
-      } else {
-        console.log ("Database exists");
-        for(var a =1; a<=routarr.length;a++) {
-          ez.insert({_id: String(a),route:routarr[a]}, function(err,body) {
-            if(!err){
-            } else {
-
-            }
-          });
-        }
-      clearInterval(timer);
-    }
-  })
+        } else {
+          for(var a =1; a<=routarr.length;a++){
+            ez.insert({_id: String(a),route:routarr[a-1]}, function(err,body){
+              if(!err){
+                  } else {
+          }
+          clearInterval(timer);
+        });
+      }
+    }        
+  });
 }
+      
 
 timer = setInterval(intervalFunct, 1000);
 
@@ -72,32 +70,33 @@ app.get('/', function(req, res, next) {
   res.send ({ title: 'Express' });
 });
 
-app.get('/request', function(req, res) {
-  const MOCKED_REQUEST = {
-    "destinations": [
-      {
-        "name": "Lopez Mateos",
-        "id": "2hfhd76f4hds"
-      },
-      {
-        "name": "Av La Calma",
-        "id": "ATF8j4978j34"
-      },{
-        "name": "Av Guadalupe",
-        "id": "ATF8j4978j34"
-      },
-      {
-        "name": "Av Naciones Unidas",
-        "id": "ATF8j4978j34"
-      },
-      {
-        "name": "La Minerva",
-        "id": "ATF8j4978j34"
-      }
-    ]
-  };
-
-  res.send (MOCKED_REQUEST);
+ app.get('/request', function(req, res) {
+  //res.send ({ title: 'Request'});
+  var bdres = [];
+  async.map(bdres, function(){
+    ez.list({startkey:'1'}, function(err, body) {
+    if (!err) {
+      
+      body.rows.forEach( function(doc) {
+        ez.get(doc.id, function(err,body){
+          if (!err){
+            console.log(body.route);
+            bdres.push({Route: body.route});
+          console.log(bdres);
+          } else {
+            console.log(err);
+          }
+            //console.log(bdres);
+          });
+        })
+       // console.log(doc);
+      res.send(bdres);
+      bdres=[];
+    } else {
+      console.log(err);
+    }
+  });
+});
 });
 
 app.get('/request/:id',function(req,res){
