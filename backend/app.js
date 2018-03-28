@@ -51,10 +51,10 @@ function intervalFunct(){
           clearInterval(timer);
         });
       }
-    }        
+    }
   });
 }
-      
+
 
 timer = setInterval(intervalFunct, 1000);
 
@@ -76,7 +76,7 @@ app.get('/', function(req, res, next) {
   async.map(bdres, function(){
     ez.list({startkey:'1'}, function(err, body) {
     if (!err) {
-      
+
       body.rows.forEach( function(doc) {
         ez.get(doc.id, function(err,body){
           if (!err){
