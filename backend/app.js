@@ -15,8 +15,6 @@ var nano = require('nano')('http://ezrides-database:5984');
 var app = express();
 app.use(cors());
 var ez = nano.use('ez-rides');
-var bdres = [];
-
 var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
@@ -76,14 +74,20 @@ app.get('/', function(req, res, next) {
   //res.send ({ title: 'Request'});
     ez.list({startkey:'1'}, function(err, body) {
     if (!err) {
-   body.rows.forEach(function(doc) {
-     var a=0;
-     console.log(doc);
-        bdres.push({ id : doc.id
-          , value : doc.value});
-        //console.log(bdres);
-    //res.send(doc);
-      });
+      var bdres = [];
+      body.rows.forEach( function(doc) {
+        ez.get(doc.id, function(err,body){
+          if (!err){
+            console.log(body.route);
+          bdres.push({Route: body.route});
+            console.log(bdres);
+          } else {
+            console.log(err);
+          }
+            //console.log(bdres);
+          });
+        })
+       // console.log(doc);
       res.send(bdres);
       bdres=[];
     } else {
