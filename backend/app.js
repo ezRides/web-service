@@ -10,6 +10,9 @@ var async = require('async');
 var http = require('http');
 var cors = require ('cors');
 var nano = require('nano')('http://ezrides-database:5984');
+var prom = require('nano-promises');
+var db = prom(nano).db.use('ez-rides');
+
 
 // Express
 var app = express();
@@ -70,33 +73,18 @@ app.get('/', function(req, res, next) {
   res.send ({ title: 'Express' });
 });
 
+/// Returns the list of all available destinations
 app.get('/request', function(req, res) {
-  //res.send ({ title: 'Request'});
-  var bdres = [];
-  async.map(bdres, function(){
-    ez.list({startkey:'1'}, function(err, body) {
-      if (!err) {
+  db.list({startkey:'1'}).then (([body, headers]) => {
+    let requests = body.rows.map(doc => db.get(doc.id));
 
-        body.rows.forEach( function(doc) {
-          ez.get(doc.id, function(err,body){
-            if (!err){
-              console.log(body.route);
-              bdres.push({Route: body.route});
-            console.log(bdres);
-            } else {
-              console.log(err);
-            }
-              //console.log(bdres);
-            });
-          })
-        // console.log(doc);
-        res.send(bdres);
-        bdres=[];
-      } else {
-        console.log(err);
-      }
+    Promise.all (requests).then((results) => {
+      let bdres = results.map ((result) => {
+        return { "name": result[0].route, "id":result[0]._id  }
+      });
+      res.send({ "destinations": bdres});
     });
-  });
+  })
 });
 
 app.get('/request/:id',function(req,res){
