@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../assets/css/destinations.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/assets/js/libphilip.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 <body class="padding-t70">
@@ -42,11 +43,7 @@
                 <hr>
                 <form action="" method="post">
                     <select class="select-destination">
-                        <optgroup label="Rutas">
-                            <option selected="selected">Av. Lopez Mateos Sur</option>
-                            <option>Av.Periferico Sur</option>
-                            <option>Av.Guadalupe</option>
-                            <option>Minerva</option>
+                        <optgroup label="Rutas" id="routes">
                         </optgroup>
                     </select>
                     <button type="submit" class="fancy-request-button bg-gradient2">
@@ -58,5 +55,24 @@
         <div class="col-md-4"></div>
     </div>
 </div>
+
+<script>
+    const CARD = `<option id={1}>{0}</option>`;
+    var html = "";
+
+    fetch('http://ez-rides.com:3000/request', {
+        method: 'GET'
+    }).then(res => res.json()).then(e => {
+        var color = 0;
+        e.destinations.forEach(element => {
+            html += String.format (CARD, element.name, element.id);
+        });
+
+        get ("routes").innerHTML = html;
+    }).catch( err => {
+        html = "<option>No results found</option>";
+        get ("routes").innerHTML = html;
+    })
+</script>
 <!-- /container -->
 </body>
