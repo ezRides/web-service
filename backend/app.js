@@ -70,33 +70,33 @@ app.get('/', function(req, res, next) {
   res.send ({ title: 'Express' });
 });
 
- app.get('/request', function(req, res) {
+app.get('/request', function(req, res) {
   //res.send ({ title: 'Request'});
   var bdres = [];
   async.map(bdres, function(){
     ez.list({startkey:'1'}, function(err, body) {
-    if (!err) {
+      if (!err) {
 
-      body.rows.forEach( function(doc) {
-        ez.get(doc.id, function(err,body){
-          if (!err){
-            console.log(body.route);
-            bdres.push({Route: body.route});
-          console.log(bdres);
-          } else {
-            console.log(err);
-          }
-            //console.log(bdres);
-          });
-        })
-       // console.log(doc);
-      res.send(bdres);
-      bdres=[];
-    } else {
-      console.log(err);
-    }
+        body.rows.forEach( function(doc) {
+          ez.get(doc.id, function(err,body){
+            if (!err){
+              console.log(body.route);
+              bdres.push({Route: body.route});
+            console.log(bdres);
+            } else {
+              console.log(err);
+            }
+              //console.log(bdres);
+            });
+          })
+        // console.log(doc);
+        res.send(bdres);
+        bdres=[];
+      } else {
+        console.log(err);
+      }
+    });
   });
-});
 });
 
 app.get('/request/:id',function(req,res){
