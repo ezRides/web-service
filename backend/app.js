@@ -73,8 +73,9 @@ function intervalFunct(){
   });
 }
 
-const loadRoutesFromDB = () => {
+const loadRoutesFromDB = (response) => {
   if (routes_cache != undefined) {
+    response ();
     return;
   }
 
@@ -85,6 +86,7 @@ const loadRoutesFromDB = () => {
       routes_cache = results.map ((result) => {
         return { "name": result[0].route, "id":result[0]._id  }
       });
+      response ();
     });
   })
 };
@@ -113,33 +115,32 @@ app.get('/', function(req, res, next) {
 
 /// Returns the list of all available destinations
 app.get('/request', function(req, res) {
-  loadRoutesFromDB ();
-  res.send (routes_cache);
+  loadRoutesFromDB (() => {
+    res.send (routes_cache);
+  });
 });
 
 app.get('/request/:id',function(req,res){
-  loadRoutesFromDB ();
-
-  //res.send ({ title: 'Request by ID'});
-  var id = req.params.id;
-
+  loadRoutesFromDB (() => {
+    var id = req.params.id;
     for (let a = 0; a < requested_routes.destinations.length;a++){
       if(id == requested_routes.destinations[a].id){
         requested_routes.destinations[a].ttl=30
-        return res.send({});
+        return res.send("Existed");
       }
     }
-    res.send(routes_cache)
-    for(let a=0; a < routes_cache.destinations.length; a++){
-      if(id == routes_cache.destinations[a].id) {
+
+    for(let a=0; a < routes_cache.length; a++){
+      if(id == routes_cache[a].id) {
         requested_routes.destinations.push ({
-          name: routes_cache.destinations[a].route,
-          id:  routes_cache.destinations[a].id,
+          name: routes_cache[a].route,
+          id:  routes_cache[a].id,
           ttl: 30
         });
       }
     }
-    return res.send({});
+    return res.send("Added new");
+  });
 });
 
 app.get('/buttoninfo/:id',function(req,res){
