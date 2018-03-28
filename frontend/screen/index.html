@@ -12,10 +12,8 @@
 </head>
 <body>
 <div class="row destinations-container screen-size" id="content">
-    <div class="col-md-12">
-        <div class="card border">
-            Loading...
-        </div>
+    <div class="card border">
+        Loading...
     </div>
 </div>
 <script>
@@ -40,9 +38,8 @@
         get ("content").innerHTML = html;
     }).catch( err => {
         html = "<h4>No results found</h4>" + err
-        get ("content").innerHTML = html;
+       get ("content").innerHTML = html;
     })
 </script>
-
 </body>
 </html>

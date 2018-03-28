@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,10 +6,11 @@
     <title>EzRides</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/destinations.css">
-    <script src="/assets/js/libphilip.js"></script>
+    <link rel="stylesheet" href="../assets/css/destinations.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/assets/js/libphilip.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 <body class="padding-t70">
 <nav class="navbar  navbar-fixed-top">
@@ -20,7 +22,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="../index.html">
+            <a class="navbar-brand" href="#">
                 <img src="../assets/img/logo.png">
                 EzRides
             </a>
@@ -33,39 +35,44 @@
     </div>
 </nav>
 <div class="container">
-    <div class="row destinations-container" id="content">
-        <div class="col-md-6">
-            <div class="card border">
-                loading...
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 text-center">
+            <div class="card-menu">
+                <h1>Selecciona tu ruta</h1>
+                <hr>
+                <form action="" method="post">
+                    <select class="select-destination">
+                        <optgroup label="Rutas" id="routes">
+                        </optgroup>
+                    </select>
+                    <button type="submit" class="fancy-request-button bg-gradient2">
+                        <span>Solicitar</span>
+                    </button>
+                </form>
             </div>
         </div>
+        <div class="col-md-4"></div>
     </div>
 </div>
-<script>
-    const colors = ['green', 'purple', 'yellow', 'pink'];
-    const CARD =
-        `<div class="col-md-6">
-            <div class="card border-{1}">
-                {0}
-            </div>
-        </div>`
 
+<script>
+    const CARD = `<option id={1}>{0}</option>`;
     var html = "";
 
-    fetch('http://ez-rides.com:3000/active', {
+    fetch('http://ez-rides.com:3000/request', {
         method: 'GET'
     }).then(res => res.json()).then(e => {
         var color = 0;
         e.destinations.forEach(element => {
-            html += String.format (CARD, element.name, colors[color++]);
+            html += String.format (CARD, element.name, element.id);
         });
 
-        get ("content").innerHTML = html;
+        get ("routes").innerHTML = html;
     }).catch( err => {
-        html = "<h4>No results found</h4>" + err
-        get ("content").innerHTML = html;
+        html = "<option>No results found</option>";
+        get ("routes").innerHTML = html;
     })
 </script>
 <!-- /container -->
 </body>
-</html>

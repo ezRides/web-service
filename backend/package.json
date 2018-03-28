@@ -16,6 +16,7 @@
     "lru-cache": "*",
     "morgan": "~1.7.0",
     "nano": "^6.4.3",
+    "nano-promises": "^1.2.0",
     "nodemon": "^1.17.1",
     "porter-stemmer": "*",
     "serve-favicon": "~2.3.0"
