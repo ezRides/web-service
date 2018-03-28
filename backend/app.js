@@ -22,26 +22,26 @@ var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
+var routes_cache = undefined;
 timer = 0;
 
 function intervalFunct(){
-  nano.db.get('ez-rides',function(err,req){
-    if(err){
+  ez.get('ez-rides',function(err,req){
+    if(err) {
         console.log(err.message);
         nano.db.create('ez-rides', function(req,res){
           if(res){
             for(var a =1; a<= routarr.length;a++){
-              ez.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
+              db.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
                 if(!err){
                 } else {
-                  //console.log(err);
+                  console.log(err);
                 }
               });
             }
             //Created
             clearInterval(timer);
           } else {
-            console.log("no se creo la base de datos", req);
             //Failed
           }
         });
@@ -57,6 +57,22 @@ function intervalFunct(){
     }
   });
 }
+
+const loadRoutesFromDB = () => {
+  if (routes_cache != undefined) {
+    return;
+  }
+
+  db.list({startkey:'1'}).then (([body, headers]) => {
+    let requests = body.rows.map(doc => db.get(doc.id));
+
+    Promise.all (requests).then((results) => {
+      routes_cache = results.map ((result) => {
+        return { "name": result[0].route, "id":result[0]._id  }
+      });
+    });
+  })
+};
 
 
 timer = setInterval(intervalFunct, 1000);
@@ -75,19 +91,13 @@ app.get('/', function(req, res, next) {
 
 /// Returns the list of all available destinations
 app.get('/request', function(req, res) {
-  db.list({startkey:'1'}).then (([body, headers]) => {
-    let requests = body.rows.map(doc => db.get(doc.id));
-
-    Promise.all (requests).then((results) => {
-      let bdres = results.map ((result) => {
-        return { "name": result[0].route, "id":result[0]._id  }
-      });
-      res.send({ "destinations": bdres});
-    });
-  })
+  loadRoutesFromDB ();
+  res.send (routes_cache);
 });
 
 app.get('/request/:id',function(req,res){
+  loadRoutesFromDB ();
+
   //res.send ({ title: 'Request by ID'});
   var id = req.params.id;
   ez.get(id, function(err,body){
