@@ -72,15 +72,17 @@ app.get('/', function(req, res, next) {
 
  app.get('/request', function(req, res) {
   //res.send ({ title: 'Request'});
+  var bdres = [];
+  async.map(bdres, function(){
     ez.list({startkey:'1'}, function(err, body) {
     if (!err) {
-      var bdres = [];
+      
       body.rows.forEach( function(doc) {
         ez.get(doc.id, function(err,body){
           if (!err){
             console.log(body.route);
-          bdres.push({Route: body.route});
-            console.log(bdres);
+            bdres.push({Route: body.route});
+          console.log(bdres);
           } else {
             console.log(err);
           }
@@ -94,6 +96,7 @@ app.get('/', function(req, res, next) {
       console.log(err);
     }
   });
+});
 });
 
 app.get('/request/:id',function(req,res){
