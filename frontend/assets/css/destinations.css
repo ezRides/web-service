@@ -74,6 +74,13 @@ a:hover, a:focus, a:active {
 /*
 FANCY BUTTONS
 */
+.fancy-request-button.bg-gradient2{
+    background: #44ea76;
+    background: -moz-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+    background: -webkit-linear-gradient(left, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+    background: linear-gradient(to right, #44ea76 0%, #39fad7 80%, #39fad7 100%);
+}
+
 .bg-gradient1 span,
 .bg-gradient1:before {
     background: #52A0FD;
@@ -95,7 +102,7 @@ FANCY BUTTONS
     background: -webkit-linear-gradient(left, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
     background: linear-gradient(to right, #fa6c9f 0%, #ffe140 80%, #ffe140 100%);
 }
-.fancy-button {
+.fancy-button, .fancy-request-button {
     display: inline-block;
     margin: 30px;
     font-family: 'Montserrat', Helvetica, Arial, sans-serif;
@@ -105,6 +112,18 @@ FANCY BUTTONS
     color: #ffffff;
     position: relative;
 }
+
+.fancy-request-button:hover{
+    color: white!important;
+    filter: brightness(1.05) contrast(1.05);
+    transform: scale(0.95);
+}
+.fancy-request-button{
+    padding:15px;
+    border-radius: 30em;
+    color:white;
+}
+
 .fancy-button:before {
     content: '';
     display: inline-block;
@@ -172,4 +191,49 @@ FANCY BUTTONS
     bottom: 0;
     filter: blur(10px) brightness(0.95);
     transition: all 0.2s ease-out;
+}
+
+button{
+    background-color: inherit;
+    border:none;
+}
+button:hover{
+    background-color: inherit;
+    color: inherit;
+    border: none;
+}
+
+.select-destination {
+    background:url("../img/down-arrow-select.png");
+    background-color:white;
+    background-repeat:no-repeat;
+    background-position: right 10px top 15px;
+    background-size: 16px 16px;
+    color:#60B4F0;
+    border:1px solid #60B4F0;
+    padding:12px;
+    width:auto;
+    font-family:arial,tahoma;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+    text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-radius:30em;
+    -webkit-border-radius:30em;
+    -webkit-appearance: none;
+    outline:0;
+    -webkit-transition:0.3s ease all;
+    -moz-transition:0.3s ease all;
+    -ms-transition:0.3s ease all;
+    -o-transition:0.3s ease all;
+    transition:0.3s ease all;
+}
+.select-destination:after{
+    font-family: 'FontAwesome' !important;
+    content: "\f053";
+    font-size: 30px;
+}
+
+select:focus, select:active {
+    outline:0;
 }
