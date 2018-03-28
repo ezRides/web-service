@@ -133,7 +133,7 @@ app.get('/request/:id',function(req,res){
     for(let a=0; a < routes_cache.length; a++){
       if(id == routes_cache[a].id) {
         requested_routes.destinations.push ({
-          name: routes_cache[a].route,
+          name: routes_cache[a].name,
           id:  routes_cache[a].id,
           ttl: 30
         });

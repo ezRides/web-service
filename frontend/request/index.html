@@ -41,12 +41,12 @@
             <div class="card-menu">
                 <h1>Selecciona tu ruta</h1>
                 <hr>
-                <form action="" method="post">
-                    <select class="select-destination">
+                <form action="" method="post" id="destination-form">
+                    <select id="select-destination" class="select-destination">
                         <optgroup label="Rutas" id="routes">
                         </optgroup>
                     </select>
-                    <button type="submit" class="fancy-request-button bg-gradient2">
+                    <button id="submit" onclick="test()" class="fancy-request-button bg-gradient2">
                         <span>Solicitar</span>
                     </button>
                 </form>
@@ -57,6 +57,18 @@
 </div>
 
 <script>
+function test() {
+    var e = get ("select-destination");
+    alert ("Route Requested");
+    fetch('http://ez-rides.com:3000/request/' + e.options[e.selectedIndex].id, {
+        method: 'GET'
+    }).then (res => res.json()).then(e => {
+
+    });
+}
+</script>
+
+<script>
     const CARD = `<option id={1}>{0}</option>`;
     var html = "";
 
@@ -64,7 +76,7 @@
         method: 'GET'
     }).then(res => res.json()).then(e => {
         var color = 0;
-        e.destinations.forEach(element => {
+        e.forEach(element => {
             html += String.format (CARD, element.name, element.id);
         });
 
