@@ -23,6 +23,21 @@ var timer = 0;
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
 var routes_cache = undefined;
+
+var requested_routes = {
+  destinations: [
+    {
+      name: "Lopez Mateos",
+      id: "1",
+      ttl: 5
+    }, {
+      name: "Av La Calma",
+      id: "2",
+      ttl: 10
+    }
+  ]
+};
+
 timer = 0;
 
 function intervalFunct(){
@@ -74,8 +89,15 @@ const loadRoutesFromDB = () => {
   })
 };
 
+const decrementTTL = () => {
+  requested_routes.destinations = requested_routes.destinations.map (destination => {
+    destination.ttl--;
+    return destination;
+  }).filter (destination => destination.ttl > 0);
+};
 
 timer = setInterval(intervalFunct, 1000);
+setInterval(decrementTTL, 1000);
 
 app.use(function(req, res, next) {
   res.setHeader("Cache-Control", "no-cache must-revalidate");
@@ -114,20 +136,7 @@ app.get('/buttoninfo/:id',function(req,res){
 });
 
 app.get('/active',function(req,res){
-  const MOCKED_REQUEST = {
-    "destinations": [
-      {
-        "name": "Lopez Mateos",
-        "id": "2hfhd76f4hds"
-      },
-      {
-        "name": "La Minerva",
-        "id": "ATF8j4978j34"
-      }
-    ]
-  };
-
-  res.send (MOCKED_REQUEST);
+  res.send (requested_routes);
 });
 
 module.exports = app;
