@@ -135,7 +135,7 @@ app.get('/request/:id',function(req,res){
         requested_routes.destinations.push ({
           name: routes_cache[a].name,
           id:  routes_cache[a].id,
-          ttl: 30
+          ttl: 10
         });
       }
     }
@@ -143,8 +143,15 @@ app.get('/request/:id',function(req,res){
   });
 });
 
-app.get('/buttoninfo/:id',function(req,res){
-  res.send ({ title: 'Button Info'});
+app.get('/button-info/',function(req,res){
+  let response = "Lopez Mateos\n"
+               + "1\n"
+               + "Av Guadalupe\n"
+               + "3\n"
+               + "Av La Calma\n"
+               + "2\n";
+
+  res.send (response);
 });
 
 app.get('/active',function(req,res){
