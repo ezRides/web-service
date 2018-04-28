@@ -14,15 +14,18 @@ var prom = require('nano-promises');
 var db = prom(nano).db.use('ez-rides');
 
 
+
 // Express
 var app = express();
 app.use(cors());
 var ez = nano.use('ez-rides');
+var data = prom(nano).db.use('request-log');
 var timer = 0;
 
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
 var routes_cache = undefined;
+var resul = undefined;
 
 var requested_routes = {
   destinations: [
@@ -44,13 +47,15 @@ function intervalFunct(){
   ez.get('ez-rides',function(err,req){
     if(err) {
         console.log(err.message);
+        nano.db.create('request-log',function(req,res){
+        });
         nano.db.create('ez-rides', function(req,res){
           if(res){
             for(var a =1; a<= routarr.length;a++){
               db.insert({_id: String(a), route:routarr[a-1]}, function(err,body){
                 if(!err){
                 } else {
-                  console.log(err);
+                  console.log(err.message);
                 }
               });
             }
@@ -73,13 +78,30 @@ function intervalFunct(){
   });
 }
 
+const countRoutes = (response) =>{
+  if(resul != undefined){
+    response();
+    return;
+  }
+  data.list().then (([body, headers]) => {
+    let requests = body.rows.map(doc => db.get(doc.id));
+
+    Promise.all (requests).then((results) => {
+      resul = results.map ((result) => {
+        return { "route": result[0].route, "id": result[0]._id}
+      });
+      response ();
+    });
+  })
+}
+
 const loadRoutesFromDB = (response) => {
   if (routes_cache != undefined) {
     response ();
     return;
   }
 
-  db.list({startkey:'1'}).then (([body, headers]) => {
+  db.list().then (([body, headers]) => {
     let requests = body.rows.map(doc => db.get(doc.id));
 
     Promise.all (requests).then((results) => {
@@ -120,7 +142,7 @@ app.get('/request', function(req, res) {
   });
 });
 
-app.get('/request/:id',function(req,res){
+app.get('/request/:id',function(req,res){ 
   loadRoutesFromDB (() => {
     var id = req.params.id;
     for (let a = 0; a < requested_routes.destinations.length;a++){
@@ -129,7 +151,6 @@ app.get('/request/:id',function(req,res){
         return res.send("Existed");
       }
     }
-
     for(let a=0; a < routes_cache.length; a++){
       if(id == routes_cache[a].id) {
         requested_routes.destinations.push ({
@@ -137,9 +158,16 @@ app.get('/request/:id',function(req,res){
           id:  routes_cache[a].id,
           ttl: 10
         });
+        data.insert({_id:String(Date.now()),route:routes_cache[a].id}, function(err,body){
+          if(!err){
+            console.log(routes_cache[a].route);
+          } else {
+            console.log(err);
+          }
+        });
       }
     }
-    return res.send("Added new");
+      return res.send("Added new");
   });
 });
 
@@ -170,6 +198,12 @@ app.get('/button-info/',function(req,res){
 
 app.get('/active',function(req,res){
   res.send (requested_routes);
+});
+
+app.get('/count', function(req,res){
+  countRoutes(()=>{
+    res.send(countRoutes);
+  });
 });
 
 module.exports = app;
