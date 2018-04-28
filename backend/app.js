@@ -143,15 +143,29 @@ app.get('/request/:id',function(req,res){
   });
 });
 
-app.get('/button-info/',function(req,res){
-  let response = "Lopez Mateos\n"
-               + "1\n"
-               + "Av Guadalupe\n"
-               + "3\n"
-               + "Av La Calma\n"
-               + "2\n";
+const count = () => {
+  return {
+    1: 2,
+    2: 12,
+    3: 4,
+    4: 5
+  };
+}
 
-  res.send (response);
+app.get('/button-info/',function(req,res){
+  const rawCount = count ();
+
+  var keysSorted = Object.keys(rawCount).sort(function(a,b){ return rawCount[a] - rawCount[b]})
+
+  loadRoutesFromDB (() => {
+    const response = keysSorted.reduce ((result, element) => {
+      console.log (routes_cache[element]);
+      result += routes_cache[element].name + "\n" + element + "\n";
+      return result;
+    }, "");
+
+    res.send (response);
+  });
 });
 
 app.get('/active',function(req,res){

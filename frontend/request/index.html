@@ -13,7 +13,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </head>
 <body class="padding-t70">
-<nav class="navbar  navbar-fixed-top">
+<nav class="navbar navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -22,8 +22,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
-                <img src="../assets/img/logo.png">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/img/logo.png">
                 EzRides
             </a>
         </div>
@@ -31,7 +31,6 @@
             <ul class="nav navbar-nav navbar-right">
             </ul>
         </div>
-        <!--/.nav-collapse -->
     </div>
 </nav>
 <div class="container">
@@ -46,7 +45,7 @@
                         <optgroup label="Rutas" id="routes">
                         </optgroup>
                     </select>
-                    <button id="submit" onclick="test()" class="fancy-request-button bg-gradient2">
+                    <button type=button id="submit" onclick="test()" class="fancy-request-button bg-gradient2">
                         <span>Solicitar</span>
                     </button>
                 </form>
@@ -59,11 +58,11 @@
 <script>
 function test() {
     var e = get ("select-destination");
-    alert ("Route Requested");
     fetch('http://ez-rides.com:3000/request/' + e.options[e.selectedIndex].id, {
         method: 'GET'
-    }).then (res => res.json()).then(e => {
-
+    }).then(e => {
+        var html = `<h3>Ruta seleccionada</h3>`;
+        get(`destination-form`).innerHTML = html;
     });
 }
 </script>
@@ -86,5 +85,4 @@ function test() {
         get ("routes").innerHTML = html;
     })
 </script>
-<!-- /container -->
 </body>
