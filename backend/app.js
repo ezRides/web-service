@@ -25,7 +25,6 @@ var timer = 0;
 var routarr = ['Lopez Mateos', 'Av La Calma', 'Av Guadalupe', 'Av Naciones Unidas', 'La Minerva'];
 var i = 1;
 var routes_cache = undefined;
-var resul = undefined;
 
 var requested_routes = {
   destinations: [
@@ -79,20 +78,27 @@ function intervalFunct(){
 }
 
 const countRoutes = (response) =>{
-  if(resul != undefined){
-    response();
-    return;
-  }
   data.list().then (([body, headers]) => {
-    let requests = body.rows.map(doc => db.get(doc.id));
+
+    let requests = body.rows.map(doc => data.get(doc.id));
+    var finalCount = {};
 
     Promise.all (requests).then((results) => {
-      resul = results.map ((result) => {
-        return { "route": result[0].route, "id": result[0]._id}
+      finalCount = results.map ((result) => {
+        return { "route": result[0].route, "id": result[0]._id }
       });
-      response ();
+
+      const finalResult = {};
+      finalCount.forEach (a => {
+        if (finalResult[a.route] == undefined) {
+          finalResult[a.route] = 1;
+        } else {
+          finalResult[a.route]++;
+        }
+      });
+      response (finalResult);
     });
-  })
+  });
 }
 
 const loadRoutesFromDB = (response) => {
@@ -132,7 +138,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.get('/', function(req, res, next) {
-  res.send ({ title: 'Express' });
+  res.send ({ title: 'Ez-Rides API' });
 });
 
 /// Returns the list of all available destinations
@@ -142,12 +148,12 @@ app.get('/request', function(req, res) {
   });
 });
 
-app.get('/request/:id',function(req,res){ 
+app.get('/request/:id',function(req,res){
   loadRoutesFromDB (() => {
     var id = req.params.id;
     for (let a = 0; a < requested_routes.destinations.length;a++){
       if(id == requested_routes.destinations[a].id){
-        requested_routes.destinations[a].ttl=30
+        requested_routes.destinations[a].ttl = 5;
         return res.send("Existed");
       }
     }
@@ -167,7 +173,7 @@ app.get('/request/:id',function(req,res){
         });
       }
     }
-      return res.send("Added new");
+    return res.send("Added new");
   });
 });
 
@@ -181,18 +187,25 @@ const count = () => {
 }
 
 app.get('/button-info/',function(req,res){
-  const rawCount = count ();
+  countRoutes (rawCount => {
+    var keysSorted = Object.keys(rawCount).sort(function(a,b){ return rawCount[b] - rawCount[a]})
+    console.log ("Raw Count", rawCount);
+    console.log ("Keys Sorted", keysSorted);
 
-  var keysSorted = Object.keys(rawCount).sort(function(a,b){ return rawCount[a] - rawCount[b]})
+    loadRoutesFromDB (() => {
+      const response = keysSorted.reduce ((result, element) => {
 
-  loadRoutesFromDB (() => {
-    const response = keysSorted.reduce ((result, element) => {
-      console.log (routes_cache[element]);
-      result += routes_cache[element].name + "\n" + element + "\n";
-      return result;
-    }, "");
+        routes_cache.forEach(route => {
+          if (route.id == element) {
+            result += route.name + "\n" + element + "\n";
+          }
+        });
 
-    res.send (response);
+        return result;
+      }, "");
+
+      res.send (response);
+    });
   });
 });
 
@@ -201,8 +214,8 @@ app.get('/active',function(req,res){
 });
 
 app.get('/count', function(req,res){
-  countRoutes(()=>{
-    res.send(countRoutes);
+  countRoutes((result)=>{
+    res.send(result);
   });
 });
 
