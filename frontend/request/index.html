@@ -58,7 +58,7 @@
 <script>
 function test() {
     var e = get ("select-destination");
-    fetch('http://ez-rides.com:3000/request/' + e.options[e.selectedIndex].id, {
+    fetch('http://paginalocal.net:3000/request/' + e.options[e.selectedIndex].id, {
         method: 'GET'
     }).then(e => {
         var html = `<h3>Ruta seleccionada</h3>`;
@@ -71,7 +71,7 @@ function test() {
     const CARD = `<option id={1}>{0}</option>`;
     var html = "";
 
-    fetch('http://ez-rides.com:3000/request', {
+    fetch('http://paginalocal.net:3000/request', {
         method: 'GET'
     }).then(res => res.json()).then(e => {
         var color = 0;
