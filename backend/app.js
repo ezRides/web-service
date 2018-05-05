@@ -194,10 +194,11 @@ app.get('/button-info/',function(req,res){
 
     loadRoutesFromDB (() => {
       const response = keysSorted.reduce ((result, element) => {
-
+        var buttonAmount = 2;
         routes_cache.forEach(route => {
-          if (route.id == element) {
+          if (route.id == element && buttonAmount > 0) {
             result += route.name + "\n" + element + "\n";
+            buttonAmount--;
           }
         });
 
